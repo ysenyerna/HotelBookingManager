@@ -101,7 +101,7 @@
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(142, 23);
             btnCancel.TabIndex = 5;
-            btnCancel.Text = "Cancel Booking";
+            btnCancel.Text = "Cancel Bookings";
             btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnExit
@@ -287,7 +287,7 @@
             tableLayoutPanel2.RowCount = 2;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 180F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(518, 450);
+            tableLayoutPanel2.Size = new Size(518, 180);
             tableLayoutPanel2.TabIndex = 19;
             // 
             // groupListView
@@ -296,7 +296,7 @@
             groupListView.Dock = DockStyle.Fill;
             groupListView.Location = new Point(3, 183);
             groupListView.Name = "groupListView";
-            groupListView.Size = new Size(512, 264);
+            groupListView.Size = new Size(512, 1);
             groupListView.TabIndex = 19;
             groupListView.TabStop = false;
             groupListView.Text = "Bookings";
@@ -306,7 +306,7 @@
             listAllBookings.Dock = DockStyle.Fill;
             listAllBookings.Location = new Point(3, 19);
             listAllBookings.Name = "listAllBookings";
-            listAllBookings.Size = new Size(506, 242);
+            listAllBookings.Size = new Size(506, 0);
             listAllBookings.TabIndex = 0;
             listAllBookings.UseCompatibleStateImageBehavior = false;
             // 
@@ -314,10 +314,10 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(518, 450);
+            ClientSize = new Size(518, 180);
             Controls.Add(tableLayoutPanel2);
             Name = "MainForm";
-            Text = "Form1";
+            Text = "Hotel Booking Manager";
             groupCreateBooking.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

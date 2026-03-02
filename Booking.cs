@@ -1,4 +1,5 @@
 // Class for individual room bookings
+namespace HotelBookingManager;
 class Booking
 {
 	// Guest name

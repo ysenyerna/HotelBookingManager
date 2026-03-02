@@ -1,4 +1,5 @@
 // Class for creating and managing bookings
+namespace HotelBookingManager;
 class BookingManager
 {
 	private readonly List<Booking> _bookings = [];
@@ -15,30 +16,45 @@ class BookingManager
 		_bookings.Add(b);
 	}
 
-	// Attempts to cancel bookings, returns false if no bookings are found
-	public bool CancelBooking(string guestName, string roomNumber)
+	// Returns the number of bookings that match criteria
+	public int GetBookingCount(string guestName, string roomNumber)
+		=> _bookings.Count(
+			b => string.Equals(b.RoomNumber, roomNumber, StringComparison.OrdinalIgnoreCase) && 
+			string.Equals(b.GuestName, guestName, StringComparison.OrdinalIgnoreCase)
+				);
+	
+
+	// Attempts to cancel bookings, returns the number of bookings canceled
+	public int CancelBooking(string guestName, string roomNumber)
 	{
 		// Find all bookings that match criteria
-		List<Booking> bookingsToCancel = [.. _bookings.Where(b => b.RoomNumber == roomNumber && b.GuestName == guestName)];
+		List<Booking> bookingsToCancel = [.. _bookings.Where(
+			b => string.Equals(b.RoomNumber, roomNumber, StringComparison.OrdinalIgnoreCase) && 
+			string.Equals(b.GuestName, guestName, StringComparison.OrdinalIgnoreCase)
+				)];
 
 		// Remove the bookings
 		bookingsToCancel.ForEach(b => _bookings.Remove(b));
 
-		return bookingsToCancel.Count != 0;
+		return bookingsToCancel.Count;
 
 	}
 
-	// Returns a list with information for all bookings
-	public List<string> ListAll()
+	// Returns a list of all bookings
+	public List<Booking> ListAll()
 	{
-		return [.. _bookings.Select(b => b.ToString())];
+		return _bookings;
 	}
 
-	// Check if a room is available during a period of time
+	// Check if a room is available during a period of time, returns true if it is available
 	public bool CheckAvailability(string roomNumber, DateTime checkIn, DateTime checkOut)
 	{
 		foreach (Booking booking in _bookings)
 		{
+			// Continue if room number is different
+			if (!string.Equals(booking.RoomNumber, roomNumber, StringComparison.OrdinalIgnoreCase))
+				continue;
+
 			// Check if the datetimes overlap
 			if (checkIn < booking.CheckOut 
 				&& booking.CheckIn < checkOut)
