@@ -335,7 +335,6 @@
 
         private TextBox textGuestName;
         private TextBox textRoomNumber;
-        private DateTimePicker dateTimePicker1;
         private DateTimePicker dateCheckIn;
         private Button btnBook;
         private Button btnCancel;
@@ -347,7 +346,6 @@
         private Label labelCheckIn;
         private Label labelCheckOut;
         private DateTimePicker dateCheckOut;
-        private GroupBox groupBooking;
         private GroupBox groupCreateBooking;
         private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel1;

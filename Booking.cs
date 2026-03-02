@@ -21,14 +21,14 @@ class Booking
 		}
 	}
 	// Dates
-	public DateTime CheckIn;
+	public DateTime CheckIn { get; private set; }
 	DateTime _checkOut;
 	public DateTime CheckOut
 	{
 		get { return _checkOut; }
 		private set
 		{
-			if (CheckIn > value)
+			if (CheckIn >= value)
 				throw new ArgumentException("Check out cannot be before check in");
 			_checkOut = value;
 		}
@@ -42,11 +42,12 @@ class Booking
 		CheckIn = checkIn;
 		CheckOut = checkOut;
 	}
+	public Booking(Booking booking) : this(booking.GuestName, booking.RoomNumber, booking.CheckIn, booking.CheckOut) {}
 
 
 	public override string ToString()
 	{
-		return $"[ BOOKING INFORMATION ] Guest: {GuestName}, Room Number: {RoomNumber}, Check In Date: {CheckIn:MM-dd-yyyy HH\\:mm}, Check Out Date: {CheckOut:MM-dd-yyyy HH\\:mm}";
+		return $"[ BOOKING INFORMATION ] Guest: {GuestName}, Room Number: {RoomNumber}, Check In Date: {CheckIn:MM-dd-yyyy HH\\:mm}, Check Out Date: {CheckOut:MM-dd-yyyy HH:mm}";
 	}
 
 

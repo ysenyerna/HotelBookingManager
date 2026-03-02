@@ -1,4 +1,6 @@
 // Class for creating and managing bookings
+using System.Collections.ObjectModel;
+
 namespace HotelBookingManager;
 class BookingManager
 {
@@ -40,11 +42,10 @@ class BookingManager
 
 	}
 
-	// Returns a list of all bookings
-	public List<Booking> ListAll()
-	{
-		return _bookings;
-	}
+	// Returns a readonly list of all bookings
+	public ReadOnlyCollection<Booking> ListAll()
+		=> _bookings.AsReadOnly();
+	
 
 	// Check if a room is available during a period of time, returns true if it is available
 	public bool CheckAvailability(string roomNumber, DateTime checkIn, DateTime checkOut)

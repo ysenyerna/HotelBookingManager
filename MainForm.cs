@@ -61,36 +61,44 @@ namespace HotelBookingManager
 			// Validate name
 			if (string.IsNullOrWhiteSpace(name))
 			{
+				Logger.Warn("Attempted to book a room without a guest name");
 				UpdateStatus("Guest name cannot be empty!", Color.Red);
 				return;
 			}
 			// Validate room number
 			if (string.IsNullOrWhiteSpace(roomNum))
 			{
+				Logger.Warn("Attempted to book a room without a room number");
 				UpdateStatus("Room number cannot be empty!", Color.Red);
 				return;
 			}
 			// Validate check in and check out
-			if (checkIn > checkOut)
+			if (checkIn >= checkOut)
 			{
+				Logger.Warn($"Attempted to book room {roomNum} for {name} from {checkIn:MM-dd-yyyy hh:mm} to {checkOut:MM-dd-yyyy hh:mm}. Check in date is before check out date");
 				UpdateStatus("Check in date cannot be after check out date!", Color.Red);
 				return;
 			}
 			// Check for double bookings
 			if (!bookingManager.CheckAvailability(roomNum, checkIn, checkOut))
 			{
+				Logger.Warn($"Attempted to double book room {roomNum} for {name} from {checkIn:MM-dd-yyyy hh:mm} to {checkOut:MM-dd-yyyy hh:mm}");
 				UpdateStatus("There is already a booking for that room at that time!", Color.Red);
 				return;
 			}
 			// Ask for confirmation
 			string msg = $"You are about to create a booking. Are you sure you wish to proceed?";
-			bool confirmed = MessageBox.Show(msg, "Confrim", MessageBoxButtons.OKCancel) == DialogResult.OK;
-			if (!confirmed) return;
+			bool confirmed = MessageBox.Show(msg, "Confirm", MessageBoxButtons.OKCancel) == DialogResult.OK;
+			if (!confirmed) {
+				Logger.Info($"Stopped booking operation on room {roomNum} for {name} from {checkIn:MM-dd-yyyy hh:mm} to {checkOut:MM-dd-yyyy hh:mm}");
+				return;
+			}
 			// Create the booking
 			Booking b = new(name, roomNum, checkIn, checkOut);
 			bookingManager.AddBooking(b);
 			UpdateStatus("Booking successfully created!", Color.Green);
 			RefreshList();
+			Logger.Info($"Booked room {roomNum} for {name} from {checkIn:MM-dd-yyyy hh:mm} to {checkOut:MM-dd-yyyy hh:mm}");
 		}
 
 		// Attempts to cancel bookings
@@ -103,19 +111,24 @@ namespace HotelBookingManager
 			// Return if no bookings are found
 			if (bookingCount == 0)
 			{
+				Logger.Warn($"Attempted to cancel bookings for {guestName} in room {roomNum} but no bookings were found");
 				UpdateStatus($"No bookings found for {guestName} in room {roomNum}!", Color.Red);
 				return;
 			}
 			// Ask the user to confirm
 			string msg = $"You are about to cancel {bookingCount} booking(s). Are you sure you wish to proceed?";
-			bool confirmed = MessageBox.Show(msg, "Confrim", MessageBoxButtons.OKCancel) == DialogResult.OK;
+			bool confirmed = MessageBox.Show(msg, "Confirm", MessageBoxButtons.OKCancel) == DialogResult.OK;
 
-			if (!confirmed) return;
+			if (!confirmed) {
+				Logger.Info($"Stopped booking cancelation operation for {guestName} in room {roomNum}");
+				return;
+			}
 
 
 			// Cancel bookings
 			int cancelCount = bookingManager.CancelBooking(guestName, roomNum);
 			RefreshList();
+			Logger.Info($"Canceled {cancelCount} booking(s) for {guestName} in room {roomNum}");
 
 			// Show confirmation message
 			if (cancelCount == 1)
@@ -173,8 +186,8 @@ namespace HotelBookingManager
 			{
 				var item = new ListViewItem(b.RoomNumber);
 				item.SubItems.Add(b.GuestName);
-				item.SubItems.Add(b.CheckIn.ToString("MM-dd-yyyy hh\\:mm"));
-				item.SubItems.Add(b.CheckOut.ToString("MM-dd-yyyy hh\\:mm"));
+				item.SubItems.Add(b.CheckIn.ToString("MM-dd-yyyy HH:mm"));
+				item.SubItems.Add(b.CheckOut.ToString("MM-dd-yyyy HH:mm"));
 				listAllBookings.Items.Add(item);
 			}
 		}

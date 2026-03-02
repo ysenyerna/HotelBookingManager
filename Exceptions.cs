@@ -1,4 +1,4 @@
-// Custom exceptions for invalid appointment times and double bookings
+// Custom exceptions
 namespace HotelBookingManager;
 public class DoubleBookingException : Exception
 {
